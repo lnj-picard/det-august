@@ -3,6 +3,8 @@ const structjson = require('./structjson.js');
 const config = require('../config/keys.js');
 
 const projectId = config.googleProjectID;
+const sessionId = config.dialogFlowSessionID;
+const languageCode = config.dialogFlowSessionLanguageCode;
 
 const credentials = {
   client_email: config.googleClientEmail,
@@ -35,7 +37,7 @@ module.exports = {
     responses = await self.handleAction(responses);
     return responses;
   },
-  eventQuery: async function(event,userID, parameters = {}){
+  eventQuery: async function(event, userID, parameters = {}){
     let sessionPath = sessionClient.sessionPath(projectId, sessionId + userID);
     let self = module.exports;
     const request = {
