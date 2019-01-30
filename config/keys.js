@@ -1,3 +1,4 @@
+//df authentication
 module.exports = {
   googleProjectID : 'august-b433c',
   dialogflowSessionID : 'august-bot-session',
