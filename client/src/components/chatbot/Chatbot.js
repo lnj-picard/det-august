@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 import { v4 as uuid } from "uuid";
 
 import Message from "./Message";
+import Card from "./Card";
 
 //set up cookies
 const cookies = new Cookies();
@@ -90,17 +91,51 @@ class Chatbot extends Component {
     }
   }
 
+  renderCards(cards) {
+    return cards.map((card, i) => <Card key={i} payload={card.structValue} />);
+  }
+
+  renderOneMessage(message, i) {
+    if (message.msg && message.msg.text && message.msg.text.text) {
+      return (
+        <Message key={i} speaks={message.speaks} text={message.msg.text.text} />
+      );
+    } else if (message.msg && message.msg.payload.fields.cards) {
+      return (
+        <div key={i}>
+          <div className="card-panel grey lighten-5 z-depth-1">
+            <div style={{ overflow: "hidden" }}>
+              <div className="col s2">
+                <a className="btn-floating btn-large waves-effect waves-light red">
+                  {message.speaks}
+                </a>
+              </div>
+              <div style={{ overflow: "auto", overflowY: "scroll" }}>
+                <div
+                  style={{
+                    height: 300,
+                    width:
+                      message.msg.payload.fields.cards.listValue.values.length *
+                      270
+                  }}
+                >
+                  {this.renderCards(
+                    message.msg.payload.fields.cards.listValue.values
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
+
   //handle messages
-  renderMessages(stateMessages) {
-    if (stateMessages) {
-      return stateMessages.map((message, i) => {
-        return (
-          <Message
-            key={i}
-            speaks={message.speaks}
-            text={message.msg.text.text}
-          />
-        );
+  renderMessages(returnedMessages) {
+    if (returnedMessages) {
+      return returnedMessages.map((message, i) => {
+        return this.renderOneMessage(message, i);
       });
     } else {
       return null;
@@ -116,12 +151,32 @@ class Chatbot extends Component {
 
   render() {
     return (
-      <div style={{ height: 400, width: 400, float: "right" }}>
+      <div
+        style={{
+          minHeight: 500,
+          maxHeight: 500,
+          width: 400,
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          border: "1px solid lightgray"
+        }}
+      >
+        <nav>
+          <div className="nav-wrapper">
+            <a className="brand-logo">August</a>
+          </div>
+        </nav>
+
         <div
           id="chatbot"
-          style={{ height: "100%", width: "100%", overflow: "auto" }}
+          style={{
+            minHeight: 388,
+            maxHeight: 388,
+            width: "100%",
+            overflow: "auto"
+          }}
         >
-          <h2>Chatbot</h2>
           {this.renderMessages(this.state.messages)}
           <div
             style={{ float: "left", clear: "both" }}
@@ -130,13 +185,23 @@ class Chatbot extends Component {
             }}
           />
         </div>
-        <input
-          type="text"
-          ref={input => {
-            this.talkInput = input;
-          }}
-          onKeyPress={this.handleKeyPress}
-        />
+        <div className=" col s12">
+          <input
+            style={{
+              margin: 0,
+              paddingLeft: "1%",
+              paddingRight: "1%",
+              width: "98%"
+            }}
+            ref={input => {
+              this.talkInput = input;
+            }}
+            placeholder="type a message:"
+            onKeyPress={this.handleKeyPress}
+            id="user_says"
+            type="text"
+          />
+        </div>
       </div>
     );
   }
