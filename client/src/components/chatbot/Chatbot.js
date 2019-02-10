@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 
 import Message from "./Message";
 import Card from "./Card";
+import QuickReplies from "./QuickReplies";
 
 //set up cookies
 const cookies = new Cookies();
@@ -16,6 +17,7 @@ class Chatbot extends Component {
   constructor(props) {
     super(props);
 
+    this.handleQuickReplyPayload = this.handleQuickReplyPayload.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
 
     this.state = {
@@ -91,6 +93,10 @@ class Chatbot extends Component {
     }
   }
 
+  handleQuickReplyPayload(payload, text) {
+    this.df_text_query(text);
+  }
+
   renderCards(cards) {
     return cards.map((card, i) => <Card key={i} payload={card.structValue} />);
   }
@@ -128,6 +134,25 @@ class Chatbot extends Component {
           </div>
         </div>
       );
+    } else if (
+      message.msg &&
+      message.msg.payload &&
+      message.msg.payload.fields &&
+      message.msg.payload.fields.quick_replies
+    ) {
+      return (
+        <QuickReplies
+          text={
+            message.msg.payload.fields.text
+              ? message.msg.payload.fields.text
+              : null
+          }
+          key={i}
+          replyClick={this.handleQuickReplyPayload}
+          speaks={message.speaks}
+          payload={message.msg.payload.fields.quick_replies.listValue.values}
+        />
+      );
     }
   }
 
@@ -153,13 +178,11 @@ class Chatbot extends Component {
     return (
       <div
         style={{
-          minHeight: 500,
-          maxHeight: 500,
-          width: 400,
+          height: "100%",
+          width: "100%",
           position: "absolute",
           bottom: 0,
-          right: 0,
-          border: "1px solid lightgray"
+          right: 0
         }}
       >
         <nav>
@@ -171,8 +194,7 @@ class Chatbot extends Component {
         <div
           id="chatbot"
           style={{
-            minHeight: 388,
-            maxHeight: 388,
+            height: "100%",
             width: "100%",
             overflow: "auto"
           }}
