@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
 const Card = props => {
   return (
-    <div style={{ width: 270, paddingRight: 30, height: 270, float: "left" }}>
+    <div>
       <div className="card">
         <div className="card-image" style={{ width: 240 }}>
           <img

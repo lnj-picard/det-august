@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 
 import Message from "./Message";
 import Card from "./Card";
+import List from "./List";
 import QuickReplies from "./QuickReplies";
 
 //set up cookies
@@ -21,7 +22,8 @@ class Chatbot extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
 
     this.state = {
-      messages: []
+      messages: [],
+      count: 10
     };
 
     if (cookies.get("userID") === undefined) {
@@ -101,6 +103,10 @@ class Chatbot extends Component {
     return cards.map((card, i) => <Card key={i} payload={card.structValue} />);
   }
 
+  renderLists(lists) {
+    return lists.map((list, i) => <List key={i} payload={list.structValue} />);
+  }
+
   renderOneMessage(message, i) {
     if (message.msg && message.msg.text && message.msg.text.text) {
       return (
@@ -119,14 +125,37 @@ class Chatbot extends Component {
               <div style={{ overflow: "auto", overflowY: "scroll" }}>
                 <div
                   style={{
-                    height: 300,
-                    width:
-                      message.msg.payload.fields.cards.listValue.values.length *
-                      270
+                    width: "80%"
                   }}
                 >
                   {this.renderCards(
                     message.msg.payload.fields.cards.listValue.values
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (message.msg && message.msg.payload.fields.lists) {
+      return (
+        <div key={i}>
+          <div className="card-panel grey lighten-5 z-depth-1">
+            <div style={{ overflow: "hidden" }}>
+              <div className="col s2">
+                <a className="btn-floating btn-large waves-effect waves-light red">
+                  {message.speaks}
+                </a>
+              </div>
+              <div style={{ overflow: "auto", overflowY: "scroll" }}>
+                <div
+                  style={{
+                    height: "auto",
+                    width: "80%"
+                  }}
+                >
+                  {this.renderLists(
+                    message.msg.payload.fields.lists.listValue.values
                   )}
                 </div>
               </div>
@@ -169,28 +198,19 @@ class Chatbot extends Component {
 
   handleKeyPress(e) {
     if (e.key === "Enter") {
-      this.df_text_query(e.target.value);
-      e.target.value = "";
+      if (this.state.count > 7) {
+        this.df_text_query(e.target.value);
+        e.target.value = "";
+        this.setState({ count: this.state.count - 1 });
+      } else {
+        console.log("Game over");
+      }
     }
   }
 
   render() {
     return (
-      <div
-        style={{
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          bottom: 0,
-          right: 0
-        }}
-      >
-        <nav>
-          <div className="nav-wrapper">
-            <a className="brand-logo">August</a>
-          </div>
-        </nav>
-
+      <div>
         <div
           id="chatbot"
           style={{
