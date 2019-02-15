@@ -2,10 +2,7 @@ const dialogflow = require("dialogflow");
 const structjson = require("./structjson.js");
 const config = require("../config/keys.js");
 
-//set up google env variables
 const projectId = config.googleProjectID;
-const sessionId = config.dialogFlowSessionID;
-const languageCode = config.dialogFlowSessionLanguageCode;
 
 const credentials = {
   client_email: config.googleClientEmail,
@@ -13,11 +10,13 @@ const credentials = {
 };
 
 const sessionClient = new dialogflow.SessionsClient({ projectId, credentials });
+const sessionPath = sessionClient.sessionPath(
+  config.googleProjectID,
+  config.dialogflowSessionID
+);
 
 module.exports = {
-  //handle text query to df
-  textQuery: async function(text, userID, parameters = {}) {
-    let sessionPath = sessionClient.sessionPath(projectId, sessionId + userID);
+  textQuery: async function(text, parameters = {}) {
     let self = module.exports;
     const request = {
       session: sessionPath,
@@ -39,16 +38,14 @@ module.exports = {
     responses = await self.handleAction(responses);
     return responses;
   },
-  //handle event queries to df
-  eventQuery: async function(event, userID, parameters = {}) {
-    let sessionPath = sessionClient.sessionPath(projectId, sessionId + userID);
+  eventQuery: async function(event, parameters = {}) {
     let self = module.exports;
     const request = {
       session: sessionPath,
       queryInput: {
         event: {
           name: event,
-          parameters: structjson.jsonToStructProto(parameters), //df uses gRPC so jsonToStructProto is needed to convert js obj to a proto struct
+          parameters: structjson.jsonToStructProto(parameters), //Dialogflow's v2 API uses gRPC. You'll need a jsonToStructProto method to convert your JavaScript object to a proto struct.
           languageCode: config.dialogflowSessionLanguageCode
         }
       }

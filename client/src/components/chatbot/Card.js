@@ -3,7 +3,7 @@ import React from "react";
 const Card = props => {
   return (
     <div>
-      <div className="card">
+      <div className="card z-depth-1">
         <div className="card-image" style={{ width: 240 }}>
           <img
             alt={props.payload.fields.header.stringValue}

@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios/index";
-import Cookies from "universal-cookie";
-import { v4 as uuid } from "uuid";
 
 import Message from "./Message";
 import Card from "./Card";
 import List from "./List";
 import QuickReplies from "./QuickReplies";
-
-//set up cookies
-const cookies = new Cookies();
 
 class Chatbot extends Component {
   messagesEnd;
@@ -25,17 +20,13 @@ class Chatbot extends Component {
       messages: [],
       count: 10
     };
-
-    if (cookies.get("userID") === undefined) {
-      cookies.set("userID", uuid(), { path: "/" });
-    }
   }
 
   //handle text input from user
   async df_text_query(queryText) {
     let msg;
     let says = {
-      speaks: "user",
+      speaks: "User",
       msg: {
         text: {
           text: queryText
@@ -45,9 +36,15 @@ class Chatbot extends Component {
 
     this.setState({ messages: [...this.state.messages, says] });
     const res = await axios.post("api/df_text_query", {
-      text: queryText,
-      userID: cookies.get("userID")
+      text: queryText
     });
+
+    if (
+      res.data.action !== "DefaultWelcomeIntent.DefaultWelcomeIntent-yes" &&
+      res.data.action !== "input.unknown"
+    ) {
+      this.setState({ count: this.state.count - 1 });
+    }
 
     if (res.data.fulfillmentMessages) {
       for (let i = 0; i < res.data.fulfillmentMessages.length; i++) {
@@ -64,8 +61,7 @@ class Chatbot extends Component {
   //handle events from user
   async df_event_query(eventName) {
     const res = await axios.post("/api/df_event_query", {
-      event: eventName,
-      userID: cookies.get("userID")
+      event: eventName
     });
     let msg,
       says = {};
@@ -115,7 +111,7 @@ class Chatbot extends Component {
     } else if (message.msg && message.msg.payload.fields.cards) {
       return (
         <div key={i}>
-          <div className="card-panel grey lighten-5 z-depth-1">
+          <div className="card-panel z-depth-0">
             <div style={{ overflow: "hidden" }}>
               <div className="col s2">
                 <a className="btn-floating btn-large waves-effect waves-light red">
@@ -140,7 +136,7 @@ class Chatbot extends Component {
     } else if (message.msg && message.msg.payload.fields.lists) {
       return (
         <div key={i}>
-          <div className="card-panel grey lighten-5 z-depth-1">
+          <div className="card-panel z-depth-0">
             <div style={{ overflow: "hidden" }}>
               <div className="col s2">
                 <a className="btn-floating btn-large waves-effect waves-light red">
@@ -198,19 +194,18 @@ class Chatbot extends Component {
 
   handleKeyPress(e) {
     if (e.key === "Enter") {
-      if (this.state.count > 7) {
+      if (this.state.count > 0) {
         this.df_text_query(e.target.value);
         e.target.value = "";
-        this.setState({ count: this.state.count - 1 });
       } else {
-        console.log("Game over");
+        this.df_event_query("Gameover");
       }
     }
   }
 
   render() {
     return (
-      <div>
+      <div className="">
         <div
           id="chatbot"
           style={{
@@ -233,7 +228,7 @@ class Chatbot extends Component {
               margin: 0,
               paddingLeft: "1%",
               paddingRight: "1%",
-              width: "98%"
+              width: "90%"
             }}
             ref={input => {
               this.talkInput = input;
@@ -243,6 +238,9 @@ class Chatbot extends Component {
             id="user_says"
             type="text"
           />
+          <span style={{ float: "right", marginRight: "3%" }}>
+            <p>{this.state.count}</p>
+          </span>
         </div>
       </div>
     );
