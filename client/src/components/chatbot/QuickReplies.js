@@ -32,9 +32,13 @@ class QuickReplies extends Component {
           <div className="col s12">
             <p className="center-align">{this.props.speaks}</p>
           </div>
-          <div id="quick-replies" className="col s10 offset-s2">
-            {this.props.text && <p>{this.props.text.stringValue}</p>}
-            {this.renderQuickReplies(this.props.payload)}
+          <div className="col s10 offset-s2">
+            {this.props.text && (
+              <p className="center-align">{this.props.text.stringValue}</p>
+            )}
+            <div className="valign-wrapper" style={{ marginLeft: "30%" }}>
+              {this.renderQuickReplies(this.props.payload)}
+            </div>
           </div>
         </div>
       </div>

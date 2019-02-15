@@ -113,10 +113,8 @@ class Chatbot extends Component {
         <div key={i}>
           <div className="card-panel z-depth-0">
             <div style={{ overflow: "hidden" }}>
-              <div className="col s2">
-                <a className="btn-floating btn-large waves-effect waves-light red">
-                  {message.speaks}
-                </a>
+              <div className="col s12">
+                <p className="center-align">{message.speaks}</p>
               </div>
               <div style={{ overflow: "auto", overflowY: "scroll" }}>
                 <div
@@ -138,10 +136,8 @@ class Chatbot extends Component {
         <div key={i}>
           <div className="card-panel z-depth-0">
             <div style={{ overflow: "hidden" }}>
-              <div className="col s2">
-                <a className="btn-floating btn-large waves-effect waves-light red">
-                  {message.speaks}
-                </a>
+              <div className="col s12">
+                <p className="center-align">{message.speaks}</p>
               </div>
               <div style={{ overflow: "auto", overflowY: "scroll" }}>
                 <div
