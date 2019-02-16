@@ -6,16 +6,23 @@ const Message = props => {
       <div className="card-panel z-depth-0" style={{ padding: 0 }}>
         {props.speaks === "August" && (
           <div className="col s12">
-            <p className="center-align">{props.speaks}</p>
+            <p className="left-align">{props.speaks}</p>
           </div>
         )}
         {props.speaks === "User" && (
           <div className="col s12">
-            <p className="center-align">{props.speaks}</p>
+            <p className="right-align">{props.speaks}</p>
           </div>
         )}
         <div className="col s10 offset-s2">
-          <p className="black-text center-align">{props.text}</p>
+          <p
+            className={
+              "black-text " +
+              (props.speaks === "August" ? "left-align" : "right-align")
+            }
+          >
+            {props.text}
+          </p>
         </div>
       </div>
     </div>

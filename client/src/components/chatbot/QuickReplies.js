@@ -30,15 +30,11 @@ class QuickReplies extends Component {
       <div className="col s12 m8 offset-m2 l6 offset-l3">
         <div className="card-panel z-depth-0" style={{ padding: 0 }}>
           <div className="col s12">
-            <p className="center-align">{this.props.speaks}</p>
+            <p className="left-align">{this.props.speaks}</p>
           </div>
           <div className="col s10 offset-s2">
-            {this.props.text && (
-              <p className="center-align">{this.props.text.stringValue}</p>
-            )}
-            <div className="valign-wrapper" style={{ marginLeft: "30%" }}>
-              {this.renderQuickReplies(this.props.payload)}
-            </div>
+            {this.props.text && <p>{this.props.text.stringValue}</p>}
+            <div>{this.renderQuickReplies(this.props.payload)}</div>
           </div>
         </div>
       </div>

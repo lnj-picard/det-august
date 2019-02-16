@@ -18,7 +18,7 @@ class Chatbot extends Component {
 
     this.state = {
       messages: [],
-      count: 10
+      count: 3
     };
   }
 
@@ -111,15 +111,18 @@ class Chatbot extends Component {
     } else if (message.msg && message.msg.payload.fields.cards) {
       return (
         <div key={i}>
-          <div className="card-panel z-depth-0">
+          <div
+            className="card-panel z-depth-0"
+            style={{ paddingLeft: 0, paddingRight: 0 }}
+          >
             <div style={{ overflow: "hidden" }}>
               <div className="col s12">
-                <p className="center-align">{message.speaks}</p>
+                <p className="left-align">{message.speaks}</p>
               </div>
               <div style={{ overflow: "auto", overflowY: "scroll" }}>
                 <div
                   style={{
-                    width: "80%"
+                    height: 300
                   }}
                 >
                   {this.renderCards(
@@ -195,19 +198,21 @@ class Chatbot extends Component {
         e.target.value = "";
       } else {
         this.df_event_query("Gameover");
+        e.target.value = "";
       }
     }
   }
 
   render() {
     return (
-      <div className="">
+      <div className="container">
         <div
           id="chatbot"
           style={{
             height: "100%",
             width: "100%",
-            overflow: "auto"
+            overflow: "auto",
+            marginTop: 20
           }}
         >
           {this.renderMessages(this.state.messages)}
