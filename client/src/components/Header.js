@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import M from "../../node_modules/materialize-css/dist/js/materialize.min.js";
 import { Link, NavLink } from "react-router-dom";
 
-//header component
 class Header extends Component {
+  //mobile navigation
   componentDidMount() {
     const elem = document.querySelector(".sidenav");
     const instance = M.Sidenav.init(elem, {
@@ -15,8 +15,8 @@ class Header extends Component {
   render() {
     return (
       <>
-        <nav>
-          <div className="nav-wrapper">
+        <nav className="z-depth-0">
+          <div className="nav-wrapper yellow darken-3">
             <a href="#" className="brand-logo">
               August
             </a>

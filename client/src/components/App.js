@@ -5,6 +5,7 @@ import Header from "./Header";
 import About from "./pages/About";
 import Chatbot from "./chatbot/Chatbot";
 
+//front end app
 class App extends Component {
   render() {
     return (

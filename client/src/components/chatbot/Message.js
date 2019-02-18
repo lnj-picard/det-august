@@ -6,15 +6,24 @@ const Message = props => {
       <div className="card-panel z-depth-0" style={{ padding: 0 }}>
         {props.speaks === "August" && (
           <div className="col s12">
-            <p className="left-align">{props.speaks}</p>
+            <img
+              style={{ width: 70 }}
+              src="https://i.postimg.cc/8kXtpgDp/logo.png"
+              alt="august-logo"
+            />
           </div>
         )}
         {props.speaks === "User" && (
           <div className="col s12">
-            <p className="right-align">{props.speaks}</p>
+            <img
+              className="right"
+              style={{ width: 60, marginBottom: 10 }}
+              src="https://i.postimg.cc/gjczN6rW/Asset-2.png"
+              alt="user-logo"
+            />
           </div>
         )}
-        <div className="col s10 offset-s2">
+        <div className="col s10 offset-s2" style={{ clear: "both" }}>
           <p
             className={
               "black-text " +

@@ -30,7 +30,10 @@ class QuickReplies extends Component {
       <div className="col s12 m8 offset-m2 l6 offset-l3">
         <div className="card-panel z-depth-0" style={{ padding: 0 }}>
           <div className="col s12">
-            <p className="left-align">{this.props.speaks}</p>
+            <img
+              style={{ width: 70 }}
+              src="https://i.postimg.cc/8kXtpgDp/logo.png"
+            />
           </div>
           <div className="col s10 offset-s2">
             {this.props.text && <p>{this.props.text.stringValue}</p>}

@@ -22,7 +22,7 @@ class Chatbot extends Component {
     };
   }
 
-  //handle text input from user
+  //get df answer after user text query
   async df_text_query(queryText) {
     let msg;
     let says = {
@@ -58,7 +58,7 @@ class Chatbot extends Component {
     }
   }
 
-  //handle events from user
+  //trigger df event
   async df_event_query(eventName) {
     const res = await axios.post("/api/df_event_query", {
       event: eventName
@@ -91,16 +91,27 @@ class Chatbot extends Component {
     }
   }
 
+  //send queries when user choses one of the quick reply options
   handleQuickReplyPayload(payload, text) {
     this.df_text_query(text);
   }
 
+  //render different types of custom payload from df
   renderCards(cards) {
     return cards.map((card, i) => <Card key={i} payload={card.structValue} />);
   }
-
   renderLists(lists) {
     return lists.map((list, i) => <List key={i} payload={list.structValue} />);
+  }
+
+  renderMessages(returnedMessages) {
+    if (returnedMessages) {
+      return returnedMessages.map((message, i) => {
+        return this.renderOneMessage(message, i);
+      });
+    } else {
+      return null;
+    }
   }
 
   renderOneMessage(message, i) {
@@ -117,18 +128,15 @@ class Chatbot extends Component {
           >
             <div style={{ overflow: "hidden" }}>
               <div className="col s12">
-                <p className="left-align">{message.speaks}</p>
+                <img
+                  style={{ width: 70 }}
+                  src="https://i.postimg.cc/8kXtpgDp/logo.png"
+                />
               </div>
               <div style={{ overflow: "auto", overflowY: "scroll" }}>
-                <div
-                  style={{
-                    height: 300
-                  }}
-                >
-                  {this.renderCards(
-                    message.msg.payload.fields.cards.listValue.values
-                  )}
-                </div>
+                {this.renderCards(
+                  message.msg.payload.fields.cards.listValue.values
+                )}
               </div>
             </div>
           </div>
@@ -137,22 +145,21 @@ class Chatbot extends Component {
     } else if (message.msg && message.msg.payload.fields.lists) {
       return (
         <div key={i}>
-          <div className="card-panel z-depth-0">
+          <div
+            className="card-panel z-depth-0"
+            style={{ paddingLeft: 0, paddingRight: 0 }}
+          >
             <div style={{ overflow: "hidden" }}>
               <div className="col s12">
-                <p className="center-align">{message.speaks}</p>
+                <img
+                  style={{ width: 70 }}
+                  src="https://i.postimg.cc/8kXtpgDp/logo.png"
+                />
               </div>
               <div style={{ overflow: "auto", overflowY: "scroll" }}>
-                <div
-                  style={{
-                    height: "auto",
-                    width: "80%"
-                  }}
-                >
-                  {this.renderLists(
-                    message.msg.payload.fields.lists.listValue.values
-                  )}
-                </div>
+                {this.renderLists(
+                  message.msg.payload.fields.lists.listValue.values
+                )}
               </div>
             </div>
           </div>
@@ -180,19 +187,9 @@ class Chatbot extends Component {
     }
   }
 
-  //handle messages
-  renderMessages(returnedMessages) {
-    if (returnedMessages) {
-      return returnedMessages.map((message, i) => {
-        return this.renderOneMessage(message, i);
-      });
-    } else {
-      return null;
-    }
-  }
-
+  //send queries when user presses enter
   handleKeyPress(e) {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && e.target.value !== "") {
       if (this.state.count > 0) {
         this.df_text_query(e.target.value);
         e.target.value = "";
@@ -203,9 +200,27 @@ class Chatbot extends Component {
     }
   }
 
+  //send queries to df when send btn clicked
+  sendQuery = () => {
+    if (this.talkInput.value !== "") {
+      if (this.state.count > 0) {
+        this.df_text_query(this.talkInput.value);
+        this.talkInput.value = "";
+      } else {
+        this.df_event_query("Gameover");
+        this.talkInput.value = "";
+      }
+    }
+  };
+
+  endGame = () => {
+    this.df_event_query("Gameover");
+    this.talkInput.value = "";
+  };
+
   render() {
     return (
-      <div className="container">
+      <div className="container" style={{ marginBottom: 50 }}>
         <div
           id="chatbot"
           style={{
@@ -225,12 +240,7 @@ class Chatbot extends Component {
         </div>
         <div className=" col s12">
           <input
-            style={{
-              margin: 0,
-              paddingLeft: "1%",
-              paddingRight: "1%",
-              width: "90%"
-            }}
+            style={{ borderBottom: "2px solid #ffc5b7" }}
             ref={input => {
               this.talkInput = input;
             }}
@@ -239,9 +249,23 @@ class Chatbot extends Component {
             id="user_says"
             type="text"
           />
-          <span style={{ float: "right", marginRight: "3%" }}>
-            <p>{this.state.count}</p>
-          </span>
+          <div className="col s12">
+            <p>{this.state.count} questions left</p>
+            <button
+              className="btn waves-effect waves-light black"
+              style={{ margin: 3 }}
+              onClick={this.sendQuery.bind(this)}
+            >
+              Send
+              <i className="material-icons right">send</i>
+            </button>
+            <button
+              className="btn waves-effect waves-light black"
+              onClick={this.endGame.bind(this)}
+            >
+              I know who did it !<i className="material-icons right">send</i>
+            </button>
+          </div>
         </div>
       </div>
     );
