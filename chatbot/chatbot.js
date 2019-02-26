@@ -43,7 +43,7 @@ module.exports = {
       queryInput: {
         event: {
           name: event,
-          parameters: structjson.jsonToStructProto(parameters), //df v2 API uses gRPC so we need a jsonToStructProto method to convertjs obj to a proto struct.
+          parameters: structjson.jsonToStructProto(parameters), //df v2 API uses gRPC so we need a jsonToStructProto method to convert js obj to a proto struct.
           languageCode: config.dialogflowSessionLanguageCode
         }
       }
