@@ -5,8 +5,16 @@ Try to solve crimes faster than the great Detective August !
 
 ## Getting Started
 
-To get started, run npm install in the root folder and the client folder. 
-Use the command npm run dev to open the project locally.
+To get started 
+```
+npm install
+```
+in the root folder and the client folder. 
+
+To open the project locally
+```
+npm run dev
+```
 
 ## Built With
 
