@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import M from "../../node_modules/materialize-css/dist/js/materialize.min.js";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Header extends Component {
   //mobile navigation
@@ -35,10 +35,10 @@ class Header extends Component {
         </nav>
         <ul className="sidenav" id="mobile-demo">
           <li>
-            <a href="">Home</a>
+            <Link to="/">August</Link>
           </li>
           <li>
-            <a href="">About the game</a>
+            <Link to="/about">About</Link>
           </li>
         </ul>
       </>
