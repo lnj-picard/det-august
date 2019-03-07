@@ -25,13 +25,10 @@ class Header extends Component {
             </a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li>
-                <a href="">Home</a>
+                <Link to="/">August</Link>
               </li>
               <li>
-                <a href="">About the game</a>
-              </li>
-              <li>
-                <a href="">Notes</a>
+                <Link to="/about">About</Link>
               </li>
             </ul>
           </div>
@@ -42,9 +39,6 @@ class Header extends Component {
           </li>
           <li>
             <a href="">About the game</a>
-          </li>
-          <li>
-            <a href="">Notes</a>
           </li>
         </ul>
       </>

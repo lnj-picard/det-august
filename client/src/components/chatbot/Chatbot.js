@@ -18,7 +18,7 @@ class Chatbot extends Component {
 
     this.state = {
       messages: [],
-      count: 3
+      count: 2
     };
   }
 
@@ -89,17 +89,37 @@ class Chatbot extends Component {
     if (this.talkInput) {
       this.talkInput.focus();
     }
+
+    if (this.state.count === 0) {
+      this.df_event_query("Gameover");
+      this.setState({ count: this.state.count - 1 });
+    }
   }
 
   //send queries when user choses one of the quick reply options
   handleQuickReplyPayload(payload, text) {
-    this.df_text_query(text);
+    if (
+      this.state.count <= -1 &&
+      payload !== "guess_culprit" &&
+      payload !== "guess_right"
+    ) {
+      alert(
+        "You failed this round, August is very disappointed. Refresh the page to start again."
+      );
+    } else if (this.state.count === -2) {
+      alert(
+        "You failed this round, August is very disappointed. Refresh the page to start again."
+      );
+    } else {
+      this.df_text_query(text);
+    }
   }
 
   //render different types of custom payload from df
   renderCards(cards) {
     return cards.map((card, i) => <Card key={i} payload={card.structValue} />);
   }
+
   renderLists(lists) {
     return lists.map((list, i) => <List key={i} payload={list.structValue} />);
   }
@@ -133,7 +153,7 @@ class Chatbot extends Component {
                   src="https://i.postimg.cc/8kXtpgDp/logo.png"
                 />
               </div>
-              <div style={{ overflow: "auto", overflowY: "scroll" }}>
+              <div style={{ display: "flex", justifyContent: "space-around" }}>
                 {this.renderCards(
                   message.msg.payload.fields.cards.listValue.values
                 )}
@@ -190,31 +210,20 @@ class Chatbot extends Component {
   //send queries when user presses enter
   handleKeyPress(e) {
     if (e.key === "Enter" && e.target.value !== "") {
-      if (this.state.count > 0) {
-        this.df_text_query(e.target.value);
-        e.target.value = "";
-      } else {
-        this.df_event_query("Gameover");
-        e.target.value = "";
-      }
+      this.df_text_query(e.target.value);
     }
   }
 
   //send queries to df when send btn clicked
   sendQuery = () => {
     if (this.talkInput.value !== "") {
-      if (this.state.count > 0) {
-        this.df_text_query(this.talkInput.value);
-        this.talkInput.value = "";
-      } else {
-        this.df_event_query("Gameover");
-        this.talkInput.value = "";
-      }
+      this.df_text_query(this.talkInput.value);
     }
   };
 
-  endGame = () => {
-    this.df_event_query("Gameover");
+  //reread the exposition at the beginig of the game
+  getOgClues = () => {
+    this.df_event_query("exposition");
     this.talkInput.value = "";
   };
 
@@ -238,35 +247,48 @@ class Chatbot extends Component {
             }}
           />
         </div>
-        <div className=" col s12">
-          <input
-            style={{ borderBottom: "2px solid #ffc5b7" }}
-            ref={input => {
-              this.talkInput = input;
-            }}
-            placeholder="type a message:"
-            onKeyPress={this.handleKeyPress}
-            id="user_says"
-            type="text"
-          />
-          <div className="col s12">
-            <p>{this.state.count} questions left</p>
-            <button
-              className="btn waves-effect waves-light black"
-              style={{ margin: 3 }}
-              onClick={this.sendQuery.bind(this)}
-            >
-              Send
-              <i className="material-icons right">send</i>
-            </button>
-            <button
-              className="btn waves-effect waves-light black"
-              onClick={this.endGame.bind(this)}
-            >
-              I know who did it !<i className="material-icons right">send</i>
-            </button>
-          </div>
-        </div>
+        {this.state.count > 0 ? (
+          <>
+            <div className=" col s12">
+              <input
+                style={{ borderBottom: "2px solid #ffc5b7" }}
+                ref={input => {
+                  this.talkInput = input;
+                }}
+                placeholder="type a message:"
+                onKeyPress={this.handleKeyPress}
+                id="user_says"
+                type="text"
+              />
+
+              <div className="col s12">
+                {this.state.count === 1 ? (
+                  <h6>This is your very last question, use it wisely</h6>
+                ) : (
+                  ""
+                )}
+                <p>{this.state.count} questions left</p>
+                <button
+                  className="btn waves-effect waves-light black"
+                  style={{ margin: 3 }}
+                  onClick={this.sendQuery.bind(this)}
+                >
+                  Send
+                  <i className="material-icons right">send</i>
+                </button>
+                <button
+                  className="btn waves-effect waves-light black"
+                  onClick={this.getOgClues.bind(this)}
+                >
+                  Tell me the clues again
+                  <i className="material-icons right">send</i>
+                </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
       </div>
     );
   }
