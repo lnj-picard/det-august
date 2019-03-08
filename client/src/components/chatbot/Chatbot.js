@@ -18,7 +18,7 @@ class Chatbot extends Component {
 
     this.state = {
       messages: [],
-      count: 7
+      count: 2
     };
   }
 
@@ -41,7 +41,8 @@ class Chatbot extends Component {
 
     if (
       res.data.action !== "DefaultWelcomeIntent.DefaultWelcomeIntent-yes" &&
-      res.data.action !== "input.unknown"
+      res.data.action !== "input.unknown" &&
+      res.data.action !== "investigation_over.investigation_over-custom"
     ) {
       this.setState({ count: this.state.count - 1 });
     }
@@ -84,6 +85,7 @@ class Chatbot extends Component {
 
   //update chatbot visual after answer
   componentDidUpdate() {
+    console.log(this.state.count);
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
 
     if (this.talkInput) {
@@ -99,17 +101,16 @@ class Chatbot extends Component {
   //send queries when user choses one of the quick reply options
   handleQuickReplyPayload(payload, text) {
     if (
-      this.state.count <= -1 &&
+      this.state.count === -1 &&
       payload !== "guess_culprit" &&
       payload !== "guess_right"
     ) {
       alert(
         "You failed this round, August is very disappointed. Refresh the page to start again."
       );
-    } else if (this.state.count === -2) {
-      alert(
-        "You failed this round, August is very disappointed. Refresh the page to start again."
-      );
+    } else if (payload === "guess_right") {
+      this.setState({ count: this.state.count - 1 });
+      this.df_text_query("Lord Ragland killed Courtney Allen");
     } else {
       this.df_text_query(text);
     }
