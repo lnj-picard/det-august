@@ -3,9 +3,10 @@ import React from "react";
 const QuickReply = props => {
   if (props.reply.structValue.fields.payload) {
     return (
-      <a
-        style={{ margin: 3, backgroundColor: "#b2c6c5" }}
-        className="btn z-depth-0"
+      <button
+        href=""
+        style={{ width: "100%", marginBottom: 3, height: "auto" }}
+        className="btn z-depth-0 grey darken-3"
         onClick={() =>
           props.click(
             props.reply.structValue.fields.payload.stringValue,
@@ -14,7 +15,7 @@ const QuickReply = props => {
         }
       >
         {props.reply.structValue.fields.text.stringValue}
-      </a>
+      </button>
     );
   } else {
     return (

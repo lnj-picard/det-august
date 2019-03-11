@@ -16,8 +16,8 @@ class Header extends Component {
     return (
       <>
         <nav className="z-depth-0">
-          <div className="nav-wrapper yellow darken-3">
-            <a href="#" className="brand-logo">
+          <div className="nav-wrapper black">
+            <a href="/" className="brand-logo">
               August
             </a>
             <a href="#" data-target="mobile-demo" className="sidenav-trigger">

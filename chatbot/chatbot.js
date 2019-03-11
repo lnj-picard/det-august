@@ -40,6 +40,7 @@ module.exports = {
     let self = module.exports;
     const request = {
       session: sessionPath,
+
       queryInput: {
         event: {
           name: event,

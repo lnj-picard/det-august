@@ -18,7 +18,7 @@ class Chatbot extends Component {
 
     this.state = {
       messages: [],
-      count: 2
+      count: 7
     };
   }
 
@@ -45,6 +45,10 @@ class Chatbot extends Component {
       res.data.action !== "investigation_over.investigation_over-custom"
     ) {
       this.setState({ count: this.state.count - 1 });
+    }
+
+    if (res.data.action === "investigation_over.investigation_over-custom") {
+      this.setState({ messages: [] });
     }
 
     if (res.data.fulfillmentMessages) {
@@ -85,7 +89,6 @@ class Chatbot extends Component {
 
   //update chatbot visual after answer
   componentDidUpdate() {
-    console.log(this.state.count);
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
 
     if (this.talkInput) {
@@ -152,12 +155,21 @@ class Chatbot extends Component {
                 <img
                   style={{ width: 70 }}
                   src="https://i.postimg.cc/8kXtpgDp/logo.png"
+                  alt="logo august"
                 />
               </div>
-              <div style={{ display: "flex", justifyContent: "space-around" }}>
-                {this.renderCards(
-                  message.msg.payload.fields.cards.listValue.values
-                )}
+              <div style={{ overflow: "auto", overflowY: "scroll" }}>
+                <div
+                  style={{
+                    width:
+                      message.msg.payload.fields.cards.listValue.values.length *
+                      300
+                  }}
+                >
+                  {this.renderCards(
+                    message.msg.payload.fields.cards.listValue.values
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -175,6 +187,7 @@ class Chatbot extends Component {
                 <img
                   style={{ width: 70 }}
                   src="https://i.postimg.cc/8kXtpgDp/logo.png"
+                  alt="logo august"
                 />
               </div>
               <div style={{ overflow: "auto", overflowY: "scroll" }}>
@@ -252,7 +265,7 @@ class Chatbot extends Component {
           <>
             <div className=" col s12">
               <input
-                style={{ borderBottom: "2px solid #ffc5b7" }}
+                style={{ borderBottom: "2px solid #ffff8d" }}
                 ref={input => {
                   this.talkInput = input;
                 }}

@@ -33,6 +33,7 @@ class QuickReplies extends Component {
             <img
               style={{ width: 70 }}
               src="https://i.postimg.cc/8kXtpgDp/logo.png"
+              alt="logo august"
             />
           </div>
           <div className="col s10 offset-s2">
