@@ -1,5 +1,6 @@
 import React from "react";
 
+//return quickreplies from df
 const QuickReply = props => {
   if (props.reply.structValue.fields.payload) {
     return (

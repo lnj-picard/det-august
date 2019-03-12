@@ -39,6 +39,7 @@ class Chatbot extends Component {
       text: queryText
     });
 
+    //update count if users ask relevent q about the murder
     if (
       res.data.action !== "DefaultWelcomeIntent.DefaultWelcomeIntent-yes" &&
       res.data.action !== "input.unknown" &&
@@ -47,10 +48,12 @@ class Chatbot extends Component {
       this.setState({ count: this.state.count - 1 });
     }
 
+    //empty messages when user guesses a culprit
     if (res.data.action === "investigation_over.investigation_over-custom") {
       this.setState({ messages: [] });
     }
 
+    //update state with bot message
     if (res.data.fulfillmentMessages) {
       for (let i = 0; i < res.data.fulfillmentMessages.length; i++) {
         msg = res.data.fulfillmentMessages[i];
@@ -95,6 +98,7 @@ class Chatbot extends Component {
       this.talkInput.focus();
     }
 
+    //trigger gameover event when count hits 0
     if (this.state.count === 0) {
       this.df_event_query("Gameover");
       this.setState({ count: this.state.count - 1 });
@@ -103,6 +107,7 @@ class Chatbot extends Component {
 
   //send queries when user choses one of the quick reply options
   handleQuickReplyPayload(payload, text) {
+    //block the game when gameover event is triggered
     if (
       this.state.count === -1 &&
       payload !== "guess_culprit" &&
@@ -111,6 +116,7 @@ class Chatbot extends Component {
       alert(
         "You failed this round, August is very disappointed. Refresh the page to start again."
       );
+      //keep the game going if user gets the right culprit
     } else if (payload === "guess_right") {
       this.setState({ count: this.state.count - 1 });
       this.df_text_query("Lord Ragland killed Courtney Allen");
@@ -158,7 +164,13 @@ class Chatbot extends Component {
                   alt="logo august"
                 />
               </div>
-              <div style={{ overflow: "auto", overflowY: "scroll" }}>
+              <div
+                style={{
+                  overflow: "auto",
+                  overflowY: "scroll",
+                  height: "570px"
+                }}
+              >
                 <div
                   style={{
                     width:
@@ -235,7 +247,7 @@ class Chatbot extends Component {
     }
   };
 
-  //reread the exposition at the beginig of the game
+  //send the exposition at the begining of the game
   getOgClues = () => {
     this.df_event_query("exposition");
     this.talkInput.value = "";
