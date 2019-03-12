@@ -18,7 +18,7 @@ class Chatbot extends Component {
 
     this.state = {
       messages: [],
-      count: 7
+      count: 2
     };
   }
 
