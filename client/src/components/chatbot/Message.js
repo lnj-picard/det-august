@@ -9,7 +9,7 @@ const Message = props => {
             <img
               style={{ width: 70 }}
               src="https://i.postimg.cc/8kXtpgDp/logo.png"
-              alt="august-logo"
+              alt="logo August"
             />
           </div>
         )}
@@ -17,9 +17,9 @@ const Message = props => {
           <div className="col s12">
             <img
               className="right"
-              style={{ width: 60, marginBottom: 10 }}
-              src="https://i.postimg.cc/gjczN6rW/Asset-2.png"
-              alt="user-logo"
+              style={{ width: 70, marginBottom: "7px" }}
+              src="https://i.postimg.cc/jqDHxr01/585e4bf3cb11b227491c339a.png"
+              alt="logo user"
             />
           </div>
         )}
