@@ -10,10 +10,11 @@ class About extends Component {
           Detective in Scotland Yard for years, he recently quit the force for
           reasons [redacted]. He then chose to open his own detective agency
           called Be Your Own Dick Agency because like everyone else, August
-          enjoy bad sexual puns from time to time. He enjoys crying in from The
-          X Files, solving crimes, laughing in the face of danger and the last
-          Ariana Grande album. May or may not be an Illuminati.
+          enjoy bad sexual puns from time to time. He enjoys crying in front of
+          The X Files, solving crimes, laughing in the face of danger and the
+          last Ariana Grande album.
         </p>
+        <p>May or may not be an Illuminati.</p>
       </div>
     );
   }
