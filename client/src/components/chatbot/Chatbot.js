@@ -107,6 +107,11 @@ class Chatbot extends Component {
 
   //send queries when user choses one of the quick reply options
   handleQuickReplyPayload(payload, text) {
+    /* le dernier evenement avant gameover va être envoyé avec l'option des différents indices à poursuivre.
+    je suis pas sure de comment enlever cette partie d'une réponse parce que le tout (texte + options) est envoyé ensemble.
+    du coup soit je dois repenser la façon dont je compose l'obj réponse dans df ou trouver un moyen d'intercepter les options avant qu'elles soient affichées ?
+    en attendant j'ai mis une alert + une manip de state.count pour empêcher le user de cliquer (et donc tricher) quand le nbr de questions est épuisé */
+
     //block the game when gameover event is triggered
     if (
       this.state.count === -1 &&
