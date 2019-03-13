@@ -6,7 +6,7 @@ class Header extends Component {
   //mobile navigation
   componentDidMount() {
     const elem = document.querySelector(".sidenav");
-    const instance = M.Sidenav.init(elem, {
+    M.Sidenav.init(elem, {
       edge: "left",
       inDuration: 250
     });
@@ -25,20 +25,20 @@ class Header extends Component {
             </a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li>
-                <Link to="/">August</Link>
+                <Link to="/about">About</Link>
               </li>
               <li>
-                <Link to="/about">About</Link>
+                <Link to="/rules">Rules</Link>
               </li>
             </ul>
           </div>
         </nav>
         <ul className="sidenav" id="mobile-demo">
           <li>
-            <Link to="/">August</Link>
+            <Link to="/about">About</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/rules">Rules</Link>
           </li>
         </ul>
       </>

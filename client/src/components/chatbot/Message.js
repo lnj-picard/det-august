@@ -30,6 +30,7 @@ const Message = props => {
               "black-text " +
               (props.speaks === "August" ? "left-align" : "right-align")
             }
+            style={{ textAlign: "justify" }}
           >
             {props.text}
           </p>
