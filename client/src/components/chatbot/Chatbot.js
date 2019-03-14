@@ -173,7 +173,7 @@ class Chatbot extends Component {
                 style={{
                   overflow: "auto",
                   overflowY: "scroll",
-                  height: "570px"
+                  height: "630px"
                 }}
               >
                 <div

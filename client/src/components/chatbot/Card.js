@@ -3,7 +3,7 @@ import React from "react";
 //card answers styling
 const Card = props => {
   return (
-    <div style={{ height: 530, paddingRight: 30, width: 300, float: "left" }}>
+    <div style={{ height: 600, paddingRight: 30, width: 300, float: "left" }}>
       <div className="card" style={{ height: "100%" }}>
         <div className="card-image" style={{ width: "100%" }}>
           <img

@@ -11,6 +11,10 @@ class Rules extends Component {
           another.
         </p>
         <p>
+          Our suspect do not tell lies BUT they will omit the whole truth if
+          they are guilty so be vigilant.
+        </p>
+        <p>
           Choose wisely what you want to do because when your questions are up,
           you have to guess the culprit and his or her motive.
         </p>
